@@ -8,7 +8,6 @@ from django.contrib.auth.models import (
     BaseUserManager,
     PermissionsMixin
 )
-from django.conf import settings
 
 
 class UserManager(BaseUserManager):
@@ -52,28 +51,3 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     # Field used for authentication
     USERNAME_FIELD = 'email'
-
-
-class Recipe(models.Model):
-    """ Recipe Object """
-
-    # ForeignKey -> Relationship with AUTH_USER_MODEL defined in settings.py
-    user = models.ForeignKey(
-        settings.AUTH_USER_MODEL,
-        on_delete=models.CASCADE,
-    )
-
-    title = models.CharField(max_length=255)
-    # TextField is for more lines and more characters than CharField
-    description = models.TextField(blank=True)
-    time_minutes = models.IntegerField()
-    price = models.DecimalField(max_digits=5, decimal_places=2)
-    link = models.CharField(max_length=255, blank=True)
-
-    """
-        Special object of a class that allows to represent the string representation of this object
-        Instead of represent the recipe object by the id (default) is going to be represented on the Django Admin
-        by the title
-    """
-    def __str__(self):
-        return self.title
